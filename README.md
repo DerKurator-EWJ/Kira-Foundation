@@ -1,15 +1,11 @@
-# KIRA FOUNDATION v0.14 – Ereignisstrom → Relationsgraph
+# KIRA FOUNDATION v0.15 — Structural Macros
 
-Alle Module der v0.13 bleiben erhalten. Neu: `foundation/event_graph.py`, `graph_cli.py`, `START_GRAPHS.bat`.
+Windows: `START_STRUCTURAL.bat`; all tests: `TEST_ALL.bat`.
 
-## Start (Windows)
+New: `foundation/structural_macros.py` discovers connected directed typed motifs of 1–3 edges in graphs derived from observed ID streams. Canonicalization enumerates vertex permutations (max 5 vertices), yielding stable ID-independent motif signatures. BLAKE2b motif IDs and per-stream evidence are stored in `data/structural_macros.sqlite`. Repeated analyses of the same stream are idempotent. The `shared` query returns motifs present in at least two streams, without confusing raw ID equality with structural equality.
 
-- `START_GRAPHS.bat`: zwei synthetische ID-Ereignisströme aufnehmen, beobachtete zeitliche Relationen als Graphen ableiten und mit dem partiellen Matcher vergleichen.
-- `TEST_ALL.bat`: Regressionstests ausführen.
-- Vorhandene v0.7+ Live-Daten importieren: `py -3 graph_cli.py --live-db "C:\Pfad\zu\live.sqlite"`.
+Example: `py -3 structural_cli.py`. Optional: `--events path/to/event_graph.sqlite --streams streamA streamB`; use `--live-db path/to/live.sqlite` to import an audio ID stream. Audio import alone does not imply semantics. The CLI's default demo adds events on each run; learned motif evidence itself is deduplicated by stream.
 
-## Wissenschaftliche Einschränkungen
+**Limitations:** These are bounded subgraph *templates*, not recursively compressed stored graphs; a motif ID does not yet replace an underlying graph. Presence is counted per stream, not by occurrence frequency within a stream. No causal or semantic inference is performed. Isomorphic motifs may admit multiple node correspondences; a shared motif is not a unique transfer map. The upstream graph extractor retains its <=7-node limit and records observational temporal edges, not causes. Exhaustive canonicalization is deliberately bounded for small research graphs.
 
-Die abgeleiteten Kanten `PRECEDES` bedeuten ausschließlich **beobachtete unmittelbare zeitliche Nachbarschaft**, nicht Ursache, Einfluss oder Semantik. Die Kanten enthalten Zählwerte und die explizite Kennzeichnung `causal: false`. `min_count=2` filtert zufällige Einzelereignisse. Nur die sieben häufigsten IDs werden für den Graphen verwendet; andere IDs sind im Rohstrom weiterhin gespeichert. Die Graphen werden mit dem vorhandenen v0.13-Matcher verglichen. Bei Mehrdeutigkeit darf kein Hypothesentransfer als gesichert ausgegeben werden.
-
-Die Graph-Pipeline ist eine eigenständige Forschungsanwendung mit SQLite-Speicher; Live-Runtime-Daten lassen sich per Import einlesen. Es gibt noch **keine** automatisierte Audio→Graph-Hintergrundverarbeitung, keine kausale Entdeckung, keine robuste semantische Interpretation und keinen Skalierungsnachweis. Bei Import in eine bereits anders verwendete Ziel-Stream-ID können Tick-Kollisionen entstehen; daher separate Datenbank oder Ziel-Stream verwenden.
+All v0.1–v0.14 components remain available. This version links event-graph extraction to reusable, ID-independent motif storage, without claiming general intelligence.
