@@ -17,3 +17,20 @@ müssen weiterhin von `event_graph` oder anderen Komponenten geliefert werden.
 Die Hierarchie komprimiert derzeit keine Daten auf Dateiebene; konkrete
 Kantenzeugen bleiben vollständig gespeichert. Getestet wird Graph-Roundtrip,
 nicht Rekonstruktion der ursprünglichen Audio-Wellenform.
+
+
+## v0.17 – Structural Macro Routing
+
+`START_ROUTING.bat` / `py -3 routing_cli.py`: Persistenter, ID-unabhaengiger
+Template-Index fuer **exakt isomorphe** kleine Relationsgraphen.
+Ein schneller, notwendiger Struktur-Fingerprint (Grad/Labels) filtert
+Kandidaten; die anschliessende Isomorphiepruefung verhindert Fehlzuordnungen.
+Bei Treffer werden gespeicherte Hierarchien auf die konkreten IDs umgebunden
+und durch `reconstruct()` validiert. Bei Fehlschlag wird die Hierarchie neu
+gebildet. Datenbank: `data/macro_router.sqlite`.
+
+**Grenzen:** Keine partielle Wiederverwendung unbekannter Graphen;
+maximal fuenf Knoten fuer Template-Matches und zwoelf Kanten fuer
+Hierarchiebildung. Kein genereller Geschwindigkeitsvorteil nachgewiesen;
+Isomorphiepruefung kann fuer kleine Graphen teurer sein als Neubau.
+Statistik `cache_hits` misst Wiederverwendung, nicht Laufzeit oder RAM.
