@@ -1,17 +1,19 @@
-# KIRA FOUNDATION v0.4 — Persistente und rekursive Makros
+# KIRA FOUNDATION v0.5 — Audioquantisierung (Windows)
 
-Windows: `START_COMPRESSION.bat` für die Demo, `TEST_ALL.bat` für alle Tests. Python 3.10+, keine Drittanbieterpakete. Enthält die bisherigen Versionen v0.1–v0.3.
+Enthält die Module aus v0.1–v0.4 sowie `foundation/audio.py`.
 
-## Neu
-- `foundation/compression.py`: verlustfreie Wörterbuchkompression über numerische Token-IDs.
-- Echte **nichtüberlappende** Ersetzungen statt bloßer Häufigkeitsschätzungen.
-- Mehrstufige Makroregeln: spätere Regeln können frühere Makro-IDs referenzieren.
-- SQLite-Journal für Ereignisse je Stream, persistente Kandidatenzählung (aus Ereignissen rekonstruierbar), gespeicherte Makroregeln und komprimierte Tokenfolgen.
-- Roundtrip-Test: Die Originalfolge muss exakt rekonstruierbar sein.
-- `compression_cli.py`: reproduzierbare Demo, Datenbank in `data/kira_research.sqlite`.
+## Start
+- `START_AUDIO.bat` startet einen reproduzierbaren synthetischen Audiotest und eine FFT-Referenz.
+- `TEST_ALL.bat` führt sämtliche automatischen Tests aus.
+- Eigene WAV-Datei: `py -3 audio_cli.py --wav "C:\Pfad\aufnahme.wav" --frames 100 --benchmark`
+- WAV muss **mono, unkomprimiertes 16-bit PCM** sein. Frames standardmäßig 1024 Samples.
+- Der gelernte Codebook-Zustand liegt in `data/audio_codebook.json`; zum Reset diese Datei löschen.
 
-## Interpretation der Metriken
-Die Einsparung wird in **abstrakten Token-Slots** berechnet: Anzahl kodierter Tokens + Anzahl der Einträge in den Makrodefinitionen einschließlich je eines Headers. Das ist keine Byte-Kompressionsrate und berücksichtigt weder SQLite-Indizes noch Metadaten, Bitbreiten oder Laufzeit-Overhead. Bei ungeeigneten Daten wird keine Regel angelegt.
+## Ursprung und Port-Status
+Die 6 Zeitbereichsmerkmale, Lag-Korrelation, adaptive Prototypen, Radii, ID-Zuweisung und PLAY-Modus sind an `reference/runtime/AdaptiveAudioQuantizer.kt` aus Kira v0.9.8 angelehnt. Das Kotlin-Original ist unverändert beigefügt. Der Python-Port ist eine **experimentelle Übertragung**, keine geprüfte bitgenaue Parität mit Android. Die Kandidatensuche bildet die lokalen Buckets ab, aber nicht den Kotlin-Index als Datenstruktur; für Performancevergleiche ist das relevant.
 
-## Grenzen
-Dies ist ein eigenständiger Forschungsprototyp, **kein vollständiger Port** von Runtime `UniversalMacroCompiler` oder Forge `macro_discovery`. Die Online-Kandidaten werden aus persistenten Rohereignissen bei Bedarf neu gezählt; die Kompression läuft batchweise. Noch kein kausales Lernen, keine autonome Hypothesenbildung. Die Rohdaten bleiben aus Gründen der Nachprüfbarkeit gespeichert, deshalb sind die berichteten Token-Slot-Einsparungen **keine** tatsächlichen Gesamtspeichereinsparungen der Datenbank.
+## FFT-Vergleich und Grenzen
+`fft_magnitudes` ist eine reine Python-Radix-2-FFT als **mathematische Referenz**. Sie berechnet ein volles Magnitudenspektrum. Der adaptive Konverter liefert dagegen 6 Zeitbereichsmerkmale und eine gelernte ID. **Das sind nicht dieselben Aufgaben.** Laufzeiten dürfen nicht als Beleg verwendet werden, dass eine Methode generell schneller ist. Für eine faire Bewertung fehlen aufgabenidentische Erkennungsziele, standardisierte Datensätze, optimierte FFT-Implementierung (z. B. NumPy), Qualität/Fehlerraten und RAM-Messungen für beide vollständigen Pipelines. Der ID-Stream ist verlustbehaftet; die früheren verlustfreien Kompressionstests beziehen sich auf ID-Sequenzen, nicht auf Rekonstruktion der ursprünglichen Audiodaten.
+
+## Weitere Grenzen
+Kein Echtzeit-Mikrofon, kein visuelles Quantisieren, kein Ghost-Lernen, keine Kotlin-Gegenprüfung. Das bestehende v0.4-Projekt wird nicht überschrieben.
