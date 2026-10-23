@@ -20,3 +20,8 @@ Wir benennen die **neuen** Werkzeuge nach dem, was sie tun. Bestehende englische
 - **Sicht:** Eine einzelne Beobachtung eines möglichen Dings.
 - **Wiedererkennung:** Prüft, ob eine neue Sicht zu einem bereits beobachteten Ding passen könnte.
 - **Dingkennung:** Vorläufige Kennung für einen vermuteten Fortbestand, keine bewiesene Identität.
+
+- **Bestand:** Was bleibt als Einheit erhalten, obwohl sich Beziehungen ändern?
+- **Teil:** Vorläufige Vermutung über dauerhaft zusammen bewegte Bestandteile.
+- **Verbindung:** Zwei eigenständig beobachtbare Dinge, die zeitweise zusammenhängen.
+- **Umbaugeschichte:** Protokoll, warum eine Vermutung geändert wurde.
