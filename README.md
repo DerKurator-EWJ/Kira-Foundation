@@ -23,3 +23,10 @@ Die Effektgroesse ist die Differenz der empirischen Y=1-Raten. Der konservative 
 **Grenzen:** Die Hypothesen werden nicht frei erfunden; A und B sind vorgegeben. Das ist ein Evidenz- und Revisionsmechanismus, kein autonomer wissenschaftlicher Theoriegenerator. Die gespeicherte Bewertung ist ein Snapshot, keine automatisch fortgeschriebene Wahrheit. Keine Integration in die Audio-Runtime. `data/hypotheses.sqlite` ist eine separate Experimentdatenbank. Python 3 und Standardbibliothek genuegen.
 
 Tests: `TEST_ALL.bat` oder `py -3 -m unittest discover -s tests -v`.
+
+
+## v0.11 – Datengetriebene Hypothesenkandidaten
+
+`START_DISCOVERY.bat` startet das neue Labor. Befehle: `observe 3000`, `scan`, `candidates`, `choose`, `explore 4000`, `review`, `history 10`. Persistenz in `data/discovery.sqlite`.
+
+Die Kandidaten werden **erst nach einer Beobachtungsanalyse** angelegt, nicht im Voraus. Die aktuelle ToyWorld besitzt nur die beobachteten binären Eingangsvariablen A und B sowie Y. Der Kandidatenscanner verwendet eine Mindeststichprobe und einen Assoziationsschwellenwert; er kann schwache oder nichtlineare Beziehungen übersehen. Eine beobachtete Assoziation ist keine Kausalität; Interventionen werden separat bewertet. Dies ist weder frei formulierte Hypothesenerfindung noch ein allgemein gültiger Kausalitätsbeweis. Das Labor bleibt vom Audio-Pfad getrennt.
