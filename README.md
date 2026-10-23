@@ -30,3 +30,21 @@ Tests: `TEST_ALL.bat` oder `py -3 -m unittest discover -s tests -v`.
 `START_DISCOVERY.bat` startet das neue Labor. Befehle: `observe 3000`, `scan`, `candidates`, `choose`, `explore 4000`, `review`, `history 10`. Persistenz in `data/discovery.sqlite`.
 
 Die Kandidaten werden **erst nach einer Beobachtungsanalyse** angelegt, nicht im Voraus. Die aktuelle ToyWorld besitzt nur die beobachteten binären Eingangsvariablen A und B sowie Y. Der Kandidatenscanner verwendet eine Mindeststichprobe und einen Assoziationsschwellenwert; er kann schwache oder nichtlineare Beziehungen übersehen. Eine beobachtete Assoziation ist keine Kausalität; Interventionen werden separat bewertet. Dies ist weder frei formulierte Hypothesenerfindung noch ein allgemein gültiger Kausalitätsbeweis. Das Labor bleibt vom Audio-Pfad getrennt.
+
+
+## v0.12 – Strukturelle Generalisierung (ID-invariant)
+
+Start: `START_GENERALIZATION.bat` oder `py -3 generalization_cli.py`.
+
+Neu: `foundation/generalization.py` mit gerichteten, relationstypisierten Graphen,
+ID-unabhaengiger Zuordnung, Pruefung eindeutiger Abbildungen und Transfer von
+**unverifizierten** Hypothesen. Die Demo benutzt zwei Welten mit unterschiedlichen
+IDs, aber identischer Struktur. Historie: `data/generalization.sqlite`.
+
+**Wissenschaftliche Grenze:** Graphen und Relationen sind in dieser Version
+explizit eingegeben; sie werden nicht aus Audio oder Rohbeobachtungen entdeckt.
+Die Abbildung ist exakte Graphisomorphie fuer kleine Graphen (maximal sieben Knoten),
+keine allgemeine Analogie- oder Kausalitaetsentdeckung. Bei mehreren gueltigen
+Abbildungen wird ein Transfer verweigert. Ein uebertragener Kandidat ist keine
+bestaetigte Wirkung und muss in der Zielwelt experimentell geprueft werden.
+Die bestehenden Module bleiben separat nutzbar.
