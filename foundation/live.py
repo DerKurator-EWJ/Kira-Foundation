@@ -7,6 +7,7 @@ import sqlite3
 from collections import Counter, deque
 from pathlib import Path
 from .audio import AdaptiveAudio, Prototype
+from .prediction import TransitionPredictor
 
 class LiveRuntime:
     def __init__(self, path='data/live.sqlite', stream='audio:live', frame_size=1024, max_width=6):
@@ -21,6 +22,7 @@ class LiveRuntime:
         CREATE TABLE IF NOT EXISTS live_log(stream TEXT NOT NULL, tick INTEGER NOT NULL, event TEXT NOT NULL, payload TEXT NOT NULL, PRIMARY KEY(stream,tick,event));
         ''')
         self.stream=stream;self.frame_size=frame_size;self.max_width=max_width
+        self.predictor=TransitionPredictor(self.db,stream,max_context=3)
         row=self.db.execute('SELECT tick,frame_size,max_width,codebook FROM live_state WHERE stream=?',(stream,)).fetchone()
         if row:
             self.tick,old_size,old_width,raw=row
@@ -32,6 +34,8 @@ class LiveRuntime:
                 self.db.execute('INSERT INTO live_state VALUES(?,?,?,?,?)',(stream,0,frame_size,max_width,self._encode()))
         tail=self.db.execute('SELECT token FROM live_events WHERE stream=? ORDER BY tick DESC LIMIT ?', (stream,max_width-1)).fetchall()
         self.tail=deque(reversed([x[0] for x in tail]),maxlen=max_width-1)
+        recent=self.db.execute('SELECT token FROM live_events WHERE stream=? ORDER BY tick DESC LIMIT ?', (stream,self.predictor.max_context)).fetchall()
+        self.prediction_tail=deque(reversed([x[0] for x in recent]),maxlen=self.predictor.max_context)
         self.paused=True
 
     def _encode(self):
@@ -57,14 +61,15 @@ class LiveRuntime:
             next_tick=self.tick+1
             new_tail=list(self.tail)+[result['id']]
             with self.db:
+                prediction=self.predictor.record(next_tick,list(self.prediction_tail),result['id'])
                 self.db.execute('INSERT INTO live_events VALUES(?,?,?,?)',(self.stream,next_tick,result['id'],int(result['created'])))
                 for width in range(2,min(self.max_width,len(new_tail))+1):
                     signature=json.dumps(new_tail[-width:],separators=(',',':'))
                     self.db.execute('''INSERT INTO live_counts VALUES(?,?,?,1) ON CONFLICT(stream,width,signature) DO UPDATE SET occurrences=occurrences+1''',(self.stream,width,signature))
                 self.db.execute('INSERT INTO live_log VALUES(?,?,?,?)',(self.stream,next_tick,'observation',json.dumps(result,sort_keys=True)))
                 self.db.execute('UPDATE live_state SET tick=?,codebook=? WHERE stream=?',(next_tick,self._encode(),self.stream))
-            self.tick=next_tick;self.tail.append(result['id'])
-            return result
+            self.tick=next_tick;self.tail.append(result['id']);self.prediction_tail.append(result['id'])
+            return {**result,'prediction':prediction}
         except Exception:
             self.audio=self._decode(before)
             raise
@@ -78,11 +83,14 @@ class LiveRuntime:
     def status(self):
         return {'stream':self.stream,'tick':self.tick,'paused':self.paused,'prototypes':len(self.audio.prototypes),
                 'macro_signatures':self.db.execute('SELECT COUNT(*) FROM live_counts WHERE stream=?',(self.stream,)).fetchone()[0],
-                'events':self.db.execute('SELECT COUNT(*) FROM live_events WHERE stream=?',(self.stream,)).fetchone()[0]}
+                'events':self.db.execute('SELECT COUNT(*) FROM live_events WHERE stream=?',(self.stream,)).fetchone()[0],
+                'prediction':self.predictor.metrics()}
     def candidates(self,min_occurrences=3,limit=10):
         if min_occurrences<1 or limit<1:raise ValueError('invalid candidate query')
         rows=self.db.execute('''SELECT width,signature,occurrences FROM live_counts WHERE stream=? AND occurrences>=? ORDER BY occurrences DESC,width DESC,signature LIMIT ?''',(self.stream,min_occurrences,limit)).fetchall()
         return [{'tokens':json.loads(sig),'occurrences':freq} for _,sig,freq in rows]
     def history(self,limit=10):
         return [{'tick':tick,'event':event,'payload':json.loads(payload)} for tick,event,payload in self.db.execute('SELECT tick,event,payload FROM live_log WHERE stream=? ORDER BY tick DESC LIMIT ?',(self.stream,limit))]
+    def predict(self):return self.predictor.distribution(list(self.prediction_tail))
+    def prediction_history(self,limit=10):return self.predictor.recent(limit)
     def close(self):self.db.close()

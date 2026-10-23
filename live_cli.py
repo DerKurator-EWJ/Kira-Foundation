@@ -1,4 +1,4 @@
-"""Interactive v0.7 shell; type help for commands."""
+"""Interactive v0.8 shell; type help for commands."""
 import argparse,json,math
 from pathlib import Path
 from foundation.live import LiveRuntime
@@ -13,7 +13,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--db',type=Path,default=Path('data/live.sqlite'))
     p.add_argument('--stream',default='audio:live');p.add_argument('--size',type=int,default=1024)
     a=p.parse_args();runtime=LiveRuntime(a.db,a.stream,a.size)
-    print('KIRA FOUNDATION v0.7 | help for commands | starts PAUSED')
+    print('KIRA FOUNDATION v0.8 | help for commands | starts PAUSED')
     try:
         while True:
             try:cmd=input('KIRA > ').strip().split()
@@ -21,7 +21,7 @@ def main():
             if not cmd:continue
             try:
                 name=cmd[0].lower()
-                if name=='help':print('start/resume | pause | step [N] | wav PATH [N] | status | macros [MIN] | history [N] | stop/exit')
+                if name=='help':print('start/resume | pause | step [N] | wav PATH [N] | status | macros [MIN] | history [N] | predict | predictions [N] | stop/exit')
                 elif name in ('start','resume'):runtime.resume();print('RUNNING (commands drive processing; no background audio capture)')
                 elif name=='pause':runtime.pause();print('PAUSED')
                 elif name=='step':
@@ -37,6 +37,8 @@ def main():
                 elif name=='status':print(json.dumps(runtime.status(),indent=2))
                 elif name=='macros':print(json.dumps(runtime.candidates(int(cmd[1]) if len(cmd)>1 else 3),indent=2))
                 elif name=='history':print(json.dumps(runtime.history(int(cmd[1]) if len(cmd)>1 else 10),indent=2))
+                elif name=='predict':print(json.dumps(runtime.predict(),indent=2))
+                elif name=='predictions':print(json.dumps(runtime.prediction_history(int(cmd[1]) if len(cmd)>1 else 10),indent=2))
                 elif name in ('stop','exit','quit'):break
                 else:print('Unknown command; type help')
             except (ValueError,RuntimeError,OSError) as e:print('ERROR:',e)
