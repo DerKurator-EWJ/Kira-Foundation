@@ -1,14 +1,9 @@
-# KIRA FOUNDATION v0.25 – Staunen und Wortbrücke
+# KIRA FOUNDATION v0.26 – Identität und Staunen
 
-## Neu
-- `foundation/staunen_bruecke.py`: verbindet **Bestand** mit der persistenten Fragenverwaltung. Offene Teil-Ganzes-Beziehungen erzeugen Fragen; vorläufig geklärte Befunde schließen sie. Neue Befunde aktualisieren die Begründung.
-- `begriffe.json`: maschinenlesbares deutsch-englisches Begriffsregister für die spätere Entwicklung.
-- `foundation/wortbruecke.py`: Nachschlagen von deutschen Namen und technischen Kennungen.
-- `START_STAUNEN.bat`: vorführbarer Ablauf.
-- Zehn zusätzliche Tests. Bestehende Dateien und Startprogramme bleiben erhalten.
+Neue Brücke `foundation/identitaetsfragen.py`: erkennt mehrdeutige Zuordnungen zwischen Sichten und bekannten Dingkennungen und hinterlegt dazu Fragen in der bestehenden SQLite-Fragenverwaltung. Werden spätere Beobachtungen eindeutig, wird die Frage vorläufig geklärt. Die bisherige Wiedererkennung bleibt unverändert. Keine Videoanalyse, kein semantischer Identitätsbeweis.
 
-## Start
-`START_STAUNEN.bat` für den Versuch, `TEST_ALL.bat` für alle Tests.
+**Windows:** `START_IDENTITAET.bat` für die Demonstration, `TEST_ALL.bat` für die gesamte Testsuite. Python 3 erforderlich.
 
-## Grenzen
-Die Beobachtungen werden im Versuch vorgegeben; es gibt noch keine selbstständige Bild- oder Sprachinterpretation. Die Fragen sind aus Vorlagen erzeugt, nicht frei formuliert. Ein geschlossener Befund ist vorläufig. Die Wortbrücke ist ein Terminologieregister, **kein** Übersetzer, der natürliches Englisch in ausführbaren Code verwandelt. Das wäre ein eigenes, abgesichertes Entwicklungswerkzeug mit Parser, Typprüfung und Tests.
+**Begriffe:** Sicht (einmalige Beobachtung), Ding (vorläufig wiedererkannte Einheit), Identitätsfrage (ungeklärte Zuordnung), Staunen (Verwaltung der Frage). Die Wortbrücke in `begriffe.json` enthält die englische technische Entsprechung.
+
+**Grenze:** Kandidatenbewertung nutzt weiterhin einfache Merkmals- und Lageabstände. Bei zwei konkurrierenden Sichten ist die Frage konservativ offen; der bestehende Tracker kann dennoch eine vorläufige Kennung vergeben. Keine automatischen Experimente zur Auflösung der Frage.

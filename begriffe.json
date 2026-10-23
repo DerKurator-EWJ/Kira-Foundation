@@ -86,6 +86,10 @@
       "english": "entity",
       "code": "Entity",
       "meaning": "Vorläufig fortbestehende Einheit"
+    },
+    "Identitätsfrage": {
+      "code": "IdentityInquiry",
+      "meaning": "Offene Zuordnung einer Sicht zu einem fortbestehenden Ding"
     }
   }
 }

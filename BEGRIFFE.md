@@ -25,3 +25,5 @@ Die maschinenlesbare Liste liegt in `begriffe.json`. `foundation/wortbruecke.py`
 | Blickmaß | `AttentionBudget` |
 | Prüfung | `Evaluation` |
 | Ding | `Entity` |
+
+- **Identitätsfrage** – Ist eine Sicht einem bereits bekannten Ding zuzuordnen? (IdentityInquiry)
