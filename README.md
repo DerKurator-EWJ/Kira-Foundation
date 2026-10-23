@@ -1,3 +1,15 @@
+# KIRA FOUNDATION v0.18 — Partielle Makro-Wiederverwendung
+
+Neu: `foundation/partial_macro_routing.py`, `START_PARTIAL_ROUTING.bat`.
+
+Bekannte kleine Relationsgraphen werden als Vorlagen gespeichert. Bei neuen Graphen sucht die Runtime nach exakten, gerichteten, typisierten Teilgraph-Einbettungen. Nicht überlappende bekannte Kanten werden wiederverwendet; unbekannte Kanten bleiben als neue Bestandteile erhalten. Die vollständige Kantenmenge wird überprüfbar rekonstruiert. SQLite hält Vorlagen und Läufe über Neustarts.
+
+**Grenzen:** höchstens 12 Kanten pro Zielgraph, höchstens 7 Zielknoten und 5 Vorlagenknoten; höchstens 20.000 getestete Abbildungen pro Vorlage. Greedy-Auswahl, nicht global optimal. Der Benchmark vergleicht unterschiedliche Arbeitsumfänge (Hierarchieaufbau versus Teilplan), daher ist er kein Nachweis einer Beschleunigung. Kein semantisches oder kausales Verständnis.
+
+Start: `START_PARTIAL_ROUTING.bat`; Tests: `TEST_ALL.bat`.
+
+---
+
 # KIRA FOUNDATION v0.16 – Hierarchische Strukturmakros
 
 Enthält v0.1–v0.15 und ergänzt `foundation/hierarchical_structures.py`.
