@@ -1,27 +1,27 @@
-# Kiras Begriffe – kurz und nachvollziehbar
+# Kiras Begriffe – die Wortbrücke
 
-Wir benennen die **neuen** Werkzeuge nach dem, was sie tun. Bestehende englische Python-Dateien bleiben aus Kompatibilitätsgründen erhalten; ihre Umbenennung erfolgt erst mit geprüften Übergängen.
+Die **deutschen Namen** sind die Begriffe, mit denen wir Kira erklären und planen. Die **englischen technischen Bezeichnungen** sind eine verbindliche Hilfe für künftige Entwickler und Sprachmodelle, wenn sie Code schreiben.
 
-| Neuer Begriff | Gemeint ist |
+Die maschinenlesbare Liste liegt in `begriffe.json`. `foundation/wortbruecke.py` kann Namen in beide Richtungen nachschlagen. Beispiel: `technisch("Staunen") == "Inquiry"`.
+
+**Wichtig:** Das Register übersetzt **keine Python-Syntax** und ersetzt keinen Compiler. Die Programmiersprache bleibt korrektes Python; bestehende öffentliche Schnittstellen werden nicht automatisch umbenannt. Neue Dokumentation und Anzeigen sollen bevorzugt die deutschen Namen benutzen. Bei neuen Funktionen kann die technische Bezeichnung aus dem Register als konsistentes Muster dienen.
+
+| Kiras Name | Technische Bezeichnung |
 |---|---|
-| **Spur** | Ein beobachteter Ausschnitt mit Messwerten, Herkunft und möglichen Nachbarn. |
-| **Merkmalsmaß** | Ordnet ähnlichen Messwerten feste Kennungen zu. |
-| **Zusammenhang** | Prüft, welche benachbarten Spuren nach einer Messregel zusammenpassen. |
-| **Band** | Eine Gruppe verbundener Spuren; noch kein erkanntes Objekt. |
-| **Blicktiefe** | Entscheidet, wo begrenzte Rechenarbeit eingesetzt wird. |
-| **Wahrnehmung** | Verbindet Merkmalsmaß und Zusammenhang. |
-| **Gedächtnis** | Speichert Beobachtungen und Modelle (bereits in älteren Modulen). |
-| **Staunen** | Erkenntnisfragen aus erklärungsbedürftigen Beobachtungen (noch nicht automatisch angebunden). |
-| **Prüfung** | Erwartungen an Beobachtungen messen. |
-| **Umbau** | Ein widerlegtes Modell nachvollziehbar ändern. |
-
-**Grundsatz:** Eine Spur ist nicht schon ein Ding. Ein Band ist nicht schon ein Gegenstand. Ein Name ist nicht schon ein Verständnis.
-
-- **Sicht:** Eine einzelne Beobachtung eines möglichen Dings.
-- **Wiedererkennung:** Prüft, ob eine neue Sicht zu einem bereits beobachteten Ding passen könnte.
-- **Dingkennung:** Vorläufige Kennung für einen vermuteten Fortbestand, keine bewiesene Identität.
-
-- **Bestand:** Was bleibt als Einheit erhalten, obwohl sich Beziehungen ändern?
-- **Teil:** Vorläufige Vermutung über dauerhaft zusammen bewegte Bestandteile.
-- **Verbindung:** Zwei eigenständig beobachtbare Dinge, die zeitweise zusammenhängen.
-- **Umbaugeschichte:** Protokoll, warum eine Vermutung geändert wurde.
+| Spur | `Observation` |
+| Merkmalsmaß | `FeatureQuantizer` |
+| Zusammenhang | `Relation` |
+| Band | `Group` |
+| Blicktiefe | `AdaptiveResolution` |
+| Wiedererkennung | `IdentityTracker` |
+| Bestand | `PartWholeModel` |
+| Staunen | `Inquiry` |
+| Erwartung | `Prediction` |
+| Vermutung | `Hypothesis` |
+| Beleg | `Evidence` |
+| Festigung | `Consolidation` |
+| Umbau | `Revision` |
+| Gedächtnis | `Memory` |
+| Blickmaß | `AttentionBudget` |
+| Prüfung | `Evaluation` |
+| Ding | `Entity` |
