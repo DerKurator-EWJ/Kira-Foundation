@@ -1,33 +1,16 @@
-# KIRA FOUNDATION v0.8 — Online prediction research
+# KIRA FOUNDATION v0.9 – Aktive Exploration (Windows)
 
-Windows: double-click **START_PREDICTION.bat**. Python 3 required; no extra packages.
+Alle Komponenten aus v0.1–v0.8 bleiben vorhanden. Neu: `foundation/exploration.py` und `START_EXPLORATION.bat`.
 
-The v0.7 live runtime is extended with a **persistent variable-order transition predictor**. It counts next-token transitions for contexts of length 1–3, backs off to shorter contexts when necessary, and reports empirical conditional frequencies. A prediction is scored **before** its observed token is learned (prequential evaluation), avoiding training/test leakage for the current event. Counts, per-event prediction results, audio codebook, and observations are committed in one SQLite transaction.
+## Start
+Doppelklick `START_EXPLORATION.bat` (Python 3 erforderlich). Alternativ: `py -3 exploration_cli.py`.
 
-### Try it
+Befehle: `observe 3000` (passive Beobachtung), `explore 4000` (Kira waehlt balanciert die naechste Intervention), `report`, `choose`, `history 5`, `do A 1 100`, `exit`.
 
-In the console, enter:
+Die simulierte Welt hat beobachtbare binaere Variablen A, B, Y und einen **verborgenen** gemeinsamen Einfluss Z. A ist mit Y korreliert, verursacht Y aber nicht. Eine gezielte A-Intervention veraendert Y nicht systematisch. B beeinflusst Y kausal. Die Lernkomponente kennt die Weltgleichung nicht, kann aber Beobachtungs- und Interventionsstatistiken getrennt auswerten. Der `report` zeigt Differenzen empirischer Y-Raten (1 minus 0); dies sind **deskriptive Punktschaetzungen**, keine Signifikanztests oder Kausalbeweise. Randomisierte externe Einfluesse und identische Weltregeln sind Annahmen dieses kontrollierten Simulators.
 
-```text
-start
-step 100
-status
-predict
-predictions 10
-pause
-stop
-```
+`explore` waehlt deterministisch die bisher am wenigsten untersuchte Kombination aus A/B und 0/1. Dies ist **aktive Versuchsplanung**, aber noch kein autonomer Erkenntnisagent, keine Hypothesengenerierung, keine Uebertragung auf Video/Audio und keine allgemein gueltige Kausalentdeckung. Ein einzelner Lauf mit wenigen Daten kann irrefuehrend sein.
 
-Restart with `START_PREDICTION.bat`; `status` and `predict` show the saved state. The runtime starts paused after each restart. You can also use `wav C:\Audio\test.wav 100` with compatible PCM WAV input.
+Persistenz: `data/exploration.sqlite`. Sie ist von `data/live.sqlite` getrennt, damit Experimente die produktive Audio-Runtime nicht veraendern. Der Simulator nutzt einen festen Seed; ein Neustart setzt mit dem naechsten Experimentindex fort. Die latente Variable Z wird nicht in der Lern-Datenbank gespeichert.
 
-`predict` shows the conditional distribution for the current token context. `predictions 10` shows previously issued predictions, observed outcomes and whether the most likely token matched. `status` includes cumulative top-1 accuracy **on events for which a prediction was available**. Ties break by numeric token ID.
-
-### Limitations
-
-- This is **statistical next-ID prediction**, not causal understanding, semantic learning, or autonomous cognition.
-- There is no live microphone or idle-time processing. The `step` command generates synthetic audio.
-- Prediction state is stored in the existing `data/live.sqlite` database; the bundled archive excludes experimental data.
-- The predictor currently stores up to three prior IDs as context; it does not yet learn variable-order causal rules or handle concept drift with forgetting.
-- Original v0.1–v0.7 tools remain available.
-
-Run all tests: `TEST_ALL.bat` or `py -3 -m unittest discover -s tests -v`.
+Tests: `TEST_ALL.bat` oder `py -3 -m unittest discover -s tests -v`.
