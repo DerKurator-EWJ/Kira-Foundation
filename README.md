@@ -24,3 +24,8 @@ Die Makro-Blätter sind geprüfte Strukturverweise mit konkretem Kantenzeugen, k
 ## v0.20 — Epistemic Regulation Core (experimentell)
 
 `START_EPISTEMIC.bat` demonstriert die Konsolidierung einer Hypothese A→B und ihre Revision zu A→C nach einem Regimewechsel. `foundation/epistemic_regulation.py` speichert Beobachtungen, Modelle und Revisionshistorie in SQLite; begrenzt Untersuchungen mit einem zurücksetzbaren Budget und liefert funktionale Zustandslabels. **Keine echten Emotionen, keine Sprachgenerierung, kein allgemeines Inquiry-System.** Der einfache Mehrheitsmechanismus (Fenster 12, Schwelle 65 %) ist eine kontrollierte Baseline, keine allgemeine Kausalitätsprüfung. Tests: `TEST_ALL.bat`.
+
+
+## v0.21 – Persistent Inquiry Queue
+
+Start `START_INQUIRY.bat`. New module `foundation/inquiry_queue.py` stores questions, prioritizes by relevance, uncertainty, expected gain, cost, and attempts; investigation spends a bounded budget and defers a question; deferred/resolved questions can reopen on an epistemic model revision. This is a testable scheduling heuristic, **not** spontaneous semantic question generation, emotion, or an integrated audiovisual Ghost runtime. v0.22 target: port Android visual quantizer/grid/coupler with reproducible frame fixtures and connect observation IDs to inquiry.
