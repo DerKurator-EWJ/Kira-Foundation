@@ -16,3 +16,7 @@ Wir benennen die **neuen** Werkzeuge nach dem, was sie tun. Bestehende englische
 | **Umbau** | Ein widerlegtes Modell nachvollziehbar ändern. |
 
 **Grundsatz:** Eine Spur ist nicht schon ein Ding. Ein Band ist nicht schon ein Gegenstand. Ein Name ist nicht schon ein Verständnis.
+
+- **Sicht:** Eine einzelne Beobachtung eines möglichen Dings.
+- **Wiedererkennung:** Prüft, ob eine neue Sicht zu einem bereits beobachteten Ding passen könnte.
+- **Dingkennung:** Vorläufige Kennung für einen vermuteten Fortbestand, keine bewiesene Identität.
