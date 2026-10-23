@@ -1,31 +1,19 @@
-# KIRA FOUNDATION v0.19 – Integrierte partielle Makro-Wiederverwendung
+# KIRA FOUNDATION v0.22 – Spuren und Zusammenhänge
 
-Die Windows-Forschungsruntime v0.1–v0.18 bleibt erhalten. Neu ist `foundation/integrated_routing.py`.
+Kira erhält einen **gemeinsamen Wahrnehmungskern**. Die neuen Werkzeuge heißen `Spur`, `MerkmalsMass`, `Zusammenhang`, `Band`, `Blicktiefe` und `Wahrnehmung` (Python-Klassennamen ohne Umlaute). Sie verarbeiten Merkmalsvektoren und Nachbarschaften unabhängig von Bild, Ton oder Text. Siehe `BEGRIFFE.md`.
 
-## Start
+## Start unter Windows
 
-Doppelklick auf `START_INTEGRATED.bat`; alle Tests über `TEST_ALL.bat`.
+- `START_WAHRNEHMUNG.bat`: Demonstration mit drei Quellen und denselben Kernwerkzeugen.
+- `START_INQUIRY.bat`: bisherige Fragenverwaltung.
+- `TEST_ALL.bat`: sämtliche bisherigen und neuen Tests.
 
-## Funktionsweise
+## Tatsächlicher Umfang
 
-Bekannte Teilgraphen werden per geprüfter Einbettung in neue Graphen gefunden. Statt sie nur im Plan zu markieren, erscheinen sie als **konkrete wiederverwendete Makro-Blätter** in der neuen Hierarchie. Noch nicht abgedeckte Kanten werden als neue Blätter aufgenommen. Anschließend werden zusammenhängende Blätter deterministisch verbunden. Jede Kante ist exakt einmal vertreten, und `reconstruct()` prüft die vollständige Rekonstruktion.
+- Deterministische Kennungen für quantisierte Messwerte.
+- Verbindung von Spuren bei **expliziter Nachbarschaft** und Merkmalsnähe.
+- Priorisierte Auswahl von Verarbeitungsschritten unter einem festen Budget.
+- Drei Beispiele mit identischem Kern und verschiedenen Herkunftsangaben.
+- Vorherige Module und Startdateien bleiben erhalten.
 
-`IntegratedRouter` speichert Vorlagen und konkrete Hierarchien in SQLite. Die Vorlage muss derzeit höchstens fünf Knoten besitzen, der Zielgraph höchstens sieben Knoten und zwölf Kanten. Die Suche ist kombinatorisch und kann teuer werden.
-
-## Fairer Benchmark
-
-`benchmark_equal_workload()` misst **für beide Verfahren die vollständige Graphrekonstruktion** einschließlich Hierarchieerstellung bzw. Wiederverwendung. Beide müssen dieselbe ursprüngliche Kantenmenge zurückgeben. Die Hierarchien selbst dürfen sich im Aufbau unterscheiden. Die Messung verwendet kleine Python-Beispiele, keine optimierte Engine. Weniger neu erzeugte Makro-Knoten bedeutet nicht zwangsläufig weniger Laufzeit; der Einbettungssuchaufwand kann dominieren.
-
-## Grenzen
-
-Die Makro-Blätter sind geprüfte Strukturverweise mit konkretem Kantenzeugen, keine vollständige wiederverwendete verschachtelte Baumstruktur. Diese Repräsentation spart in diesem Prototyp keinen nachgewiesenen RAM oder Dateispeicher. Es findet keine semantische oder kausale Generalisierung statt. Der Kompositionsalgorithmus ist nicht optimal und ist auf kleine Graphen begrenzt.
-
-
-## v0.20 — Epistemic Regulation Core (experimentell)
-
-`START_EPISTEMIC.bat` demonstriert die Konsolidierung einer Hypothese A→B und ihre Revision zu A→C nach einem Regimewechsel. `foundation/epistemic_regulation.py` speichert Beobachtungen, Modelle und Revisionshistorie in SQLite; begrenzt Untersuchungen mit einem zurücksetzbaren Budget und liefert funktionale Zustandslabels. **Keine echten Emotionen, keine Sprachgenerierung, kein allgemeines Inquiry-System.** Der einfache Mehrheitsmechanismus (Fenster 12, Schwelle 65 %) ist eine kontrollierte Baseline, keine allgemeine Kausalitätsprüfung. Tests: `TEST_ALL.bat`.
-
-
-## v0.21 – Persistent Inquiry Queue
-
-Start `START_INQUIRY.bat`. New module `foundation/inquiry_queue.py` stores questions, prioritizes by relevance, uncertainty, expected gain, cost, and attempts; investigation spends a bounded budget and defers a question; deferred/resolved questions can reopen on an epistemic model revision. This is a testable scheduling heuristic, **not** spontaneous semantic question generation, emotion, or an integrated audiovisual Ghost runtime. v0.22 target: port Android visual quantizer/grid/coupler with reproducible frame fixtures and connect observation IDs to inquiry.
+**Noch nicht enthalten:** automatische Bild-/Audio-/Text-Merkmalsextraktion aus Rohdaten, zeitlich beständige Objektidentität, Sprachverständnis, Anschluss der neuen Bänder an das Langzeitgedächtnis und automatische Staunen-Fragen. Die Bild-/Ton-/Textbeispiele verwenden bewusst kleine vorgegebene Merkmalsvektoren. Die Kotlin-Referenzen liegen weiterhin unter `reference/`. Der Kern ist eine getestete Schnittstelle, noch keine vollständige audiovisuelle Integration.
